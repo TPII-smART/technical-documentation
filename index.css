@@ -19,7 +19,7 @@ header {
   left: 0px;
   width: 20vw;
   border-right: solid;
-  border-color: #c97000;
+  border-color: #234969;
   height: 100vh;
 }
 
@@ -62,7 +62,7 @@ header {
 .main-li{
   position: relative;
   border-top: 2px solid;
-  border-color: #c97000;
+  border-color: #234969;
   padding: 10px 10px 10px 10px;
 }
 
