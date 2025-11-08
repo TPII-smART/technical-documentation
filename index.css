@@ -1,0 +1,167 @@
+html {
+  font-size: 10px;
+  font-family: 'Open Sans', Arial, sans-serif;
+  scroll-behavior: smooth;
+  background-color: #111314;
+  color: #fafafa;
+}
+
+header {
+  font-size: 2.5rem;
+  font-weight: bolder;
+  text-align: center;
+}
+
+#navbar {
+  position: fixed;
+  max-width: 300px;
+  top: 0px;
+  left: 0px;
+  width: 20vw;
+  border-right: solid;
+  border-color: #c97000;
+  height: 100vh;
+}
+
+#navbar ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  font-size: 1.5rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: calc(100vh - 95px);
+}
+
+#nav-header {
+  padding: 15px 0px 25px 0px;
+  height: 60px;
+}
+
+#nav-header p{
+  font-size: 2rem;
+  display: inline;
+  width: auto;
+  vertical-align: middle;
+}
+
+#nav-header img{
+  width: 40px;
+  height: auto;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.main-section{
+  border-bottom: 1px solid;
+  border-color: #234969;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.main-li{
+  position: relative;
+  border-top: 2px solid;
+  border-color: #c97000;
+  padding: 10px 10px 10px 10px;
+}
+
+.sub-li{
+  position: relative;
+  border-top: 1px solid;
+  border-color: #234969;
+  padding: 10px 10px 10px 10px;
+}
+
+.nav-link {
+  font-weight: bold;
+  font-size: 2rem;
+  text-decoration: none;
+  color: #fafafa;
+}
+
+.nav-sublink {
+  font-size: 1.5rem;
+  margin-left: 20px;
+  text-decoration: none;
+  color: #fafafa;
+}
+
+#main-doc{
+  position: absolute;
+  left: 24vw;
+  font-size: 2rem;
+  padding-right: 3vw;
+  padding-top: 20px;
+}
+
+.sec-header{
+  font-size: 4rem;
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+.sec-subheader{
+  font-size: 3rem;
+  text-align: left;
+}
+
+.text-with-image {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+}
+
+.section-image {
+  width: 100px;
+  height: auto;
+  border-radius: 5px;
+  border-color: #234969;
+  object-fit: cover;
+}
+
+#main-doc code {
+  background: #fafafa;
+  padding: 5px 30px 5px 30px;
+  border-radius: 4px;
+  border-color: #234969;
+}
+
+@media (max-width: 1000px){
+  #nav-header{
+    font-size: 2.5vw;
+  }
+}
+
+@media (max-width: 600px){
+  #navbar{
+    background-color: #fafafa;
+    z-index: 1;
+    max-width: 100%;
+    width: 100%;
+    height: 200px;
+  }
+  
+  #navbar ul{
+    height: 140px;
+    border-bottom: solid;
+  }
+  
+  #nav-header{
+    padding: 15px 0 15px 0;
+    height: 30px;
+    font-size: 2rem;
+  }
+  
+  #main-doc{
+    position: absolute;
+    left: 30px;
+    font-size: 2rem;
+    top: 210px;
+    padding-right: 30px;
+  }
+  
+}
