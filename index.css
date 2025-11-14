@@ -149,6 +149,56 @@ header {
   border-color: #234969;
 }
 
+/* Thumbnails */
+.thumb-link { display:inline-block; cursor:zoom-in; }
+.section-image, .section-image-large { max-width:100%; height:auto; display:block; }
+
+/* Lightbox (hidden by default) */
+.lightbox {
+  position: fixed;
+  inset: 0; /* top:0; right:0; bottom:0; left:0; */
+  background: rgba(0,0,0,0.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+}
+
+/* Show when targeted by fragment */
+.lightbox:target { display: flex; }
+
+/* Image inside lightbox */
+.lightbox img {
+  max-width: 95%;
+  max-height: 95%;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+  border-radius: 6px;
+}
+
+/* Close control (clicking it goes to href="#" which clears fragment) */
+.lightbox-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 44px;
+  height: 44px;
+  text-decoration: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 600;
+  background: rgba(0,0,0,0.35);
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+}
+.lightbox-close:after { content: "✕"; color: #fff; line-height: 1; }
+
+/* Prevent page scrolling while lightbox open (optional, CSS-only trick) */
+:target { overflow: hidden; }
+
 @media (max-width: 1000px){
   #nav-header{
     font-size: 2.5vw;

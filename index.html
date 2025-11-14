@@ -31,7 +31,7 @@
       <header class="sec-header">Design &amp; Architecture</header>
       <article class="sec-text">
         <header class="sec-subheader" id="design-subtitle">Subtitle</header>
-        <p>Info here info here info here info here info here info here info here info here info here info here info here info here info here info here info here info here info here info here info here info here info here info here info here info here info here info here info here info here info here info here info here info here info here info here info here info here info here info here info here.</p>
+        <p>Info here...</p>
 
         <header class="sec-subheader" id="components">Subheader</header>
         <ul>
@@ -47,10 +47,15 @@
             </header>
             <p>Text and image.</p>
           </div>
-          <img src="assets/logo.png" alt="Test image" class="section-image">
+          <!-- thumbnail links to lightbox target -->
+          <a href="#img-design" class="thumb-link">
+            <img src="assets/logo.png" alt="Design image" class="section-image">
+          </a>
         </div>
         <div class="image-container">
-          <img src="assets/logo.png" alt="Test image" class="section-image-large">
+          <a href="#img-large" class="thumb-link">
+            <img src="assets/logo.png" alt="Test image" class="section-image-large">
+          </a>
           <p class="image-description">Image caption example.</p>
         </div>
       </article>
@@ -72,5 +77,16 @@
       </article>
     </section>
   </main>
+
+  <!-- Lightbox targets (CSS-only using :target) -->
+  <div id="img-design" class="lightbox">
+    <a class="lightbox-close" href="#" title="Close"></a>
+    <img src="assets/logo.png" alt="Design image large">
+  </div>
+
+  <div id="img-large" class="lightbox">
+    <a class="lightbox-close" href="#" title="Close"></a>
+    <img src="assets/logo.png" alt="Large image view">
+  </div>
 </body>
 </html>
