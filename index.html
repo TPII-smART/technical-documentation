@@ -35,7 +35,14 @@
       <li class="sub-li"><a class="nav-sublink" href="#common-logic-best-practices">Common Logic & Best Practices</a></li>
 
       <li class="main-li"><a class="nav-link" href="#disputes">Dispute Resolution Flow</a></li>
-      <li class="sub-li"><a class="nav-sublink" href="#disputes-subtitle">Subtitle</a></li>
+      <li class="sub-li"><a class="nav-sublink" href="#disputes-subtitle">Kleros Integration</a></li>
+      <li class="sub-li"><a class="nav-sublink" href="#arbitration-process-overview">Dispute Process Overview</a></li>
+      <li class="subsub-li"><a class="nav-subsublink" href="#arbitration-financing">Arbitration Financing</a></li>
+      <li class="subsub-li"><a class="nav-subsublink" href="#appeal-mechanism">Appeal Mechanism</a></li>
+      <li class="subsub-li"><a class="nav-subsublink" href="#crowdfunding-appeals">Crowdfunding Appeals</a></li>
+      <li class="subsub-li"><a class="nav-subsublink" href="#evidence-submission">Evidence Submission</a></li>
+      <li class="subsub-li"><a class="nav-subsublink" href="#final-resolution">Final Resolution</a></li>
+      <li class="subsub-li"><a class="nav-subsublink" href="#dispute-dismissal">Dispute Dismissal</a></li>
     </ul>
   </nav>
 
@@ -202,8 +209,100 @@
     <section id="disputes" class="main-section">
       <header class="sec-header">Dispute Resolution Flow</header>
       <article class="sec-text">
-        <header class="sec-subheader" id="disputes-subtitle">Subtitle</header>
-        <p>Info here.</p>
+        <header class="sec-subheader" id="disputes-subtitle">Kleros Integration</header>
+        <p>
+          For resolving conflicts that may arise between associated parties, smART integrates with <strong><a href="https://kleros.io" target="_blank">Kleros</a></strong>, a decentralized arbitration protocol focused on dispute resolution within the blockchain economy. Community members act as arbitrators for disputes originating in different domains.
+        </p>
+        <p>
+          Kleros users stake tokens in specialized courts to increase their probability of being selected as jurors for disputes filed in those courts. When a dispute arises, jurors are provided with all pertinent information about the work, and both contract parties can submit additional evidence to support their arguments. A random group of jurors is selected to form a "jury", who vote based on the evidence provided. The system proportionally rewards jurors who voted with the majority and penalizes those who did not, creating a clear incentive for honest voting and careful analysis of the evidence.
+        </p>
+
+        <header class="sec-subheader" id="arbitration-process-overview">Dispute Process Overview</header>
+        <p>
+          The dispute resolution process in smART follows these key steps:
+        </p>
+        <header class="sec-subsubheader" id="arbitration-financing">Arbitration Financing</header>
+        <p>
+          The financing of arbitration is a crucial part of the process. For a dispute to be valid, <strong>both parties must deposit the corresponding arbitration fees</strong> into the smart contract. The fee deposit process works as follows:
+        </p>
+        <ul>
+          <li>A dispute is created when one of the parties deposits a fee, then a <strong>10-day deadline</strong> is set for the other party to deposit theirs.</li>
+          <li>If only one party deposits the fee within the deadline, the contract automatically rules in favor of the party that paid, without creating an actual dispute in Kleros.</li>
+          <li>If both parties deposit the required funds, the dispute is formally created in Kleros and the winning party will be reimbursed when the process concludes.</li>
+        </ul>
+        <p>
+          This mechanism ensures that only serious disputes proceed to arbitration, as both parties must demonstrate commitment by depositing fees.
+        </p>
+
+        <header class="sec-subsubheader" id="appeal-mechanism">Appeal Mechanism</header>
+        <p>
+          Once the initial voting is completed, the involved parties have the opportunity to appeal the decision during a specified period. The appeal mechanism includes enhanced incentives:
+        </p>
+        <ol>
+          <li><strong>Fee Deposits:</strong> Both parties must deposit arbitration fees again for the appeal round.</li>
+          <li><strong>Asymmetric Staking:</strong> The staking requirements differ based on the current ruling:
+            <ul>
+              <li>The party <strong>winning</strong> the current ruling must stake <strong>100%</strong> of the appeal cost (WINNER_STAKE_MULTIPLIER).</li>
+              <li>The party <strong>losing</strong> the current ruling must stake <strong>200%</strong> of the appeal cost (LOSER_STAKE_MULTIPLIER).</li>
+            </ul>
+          </li>
+        </ol>
+        <p>
+          This additional deposit serves as a guarantee. If the appeal proves unfounded and the party loses again, the extra amount is awarded to the winning party as compensation for time lost. Conversely, if the appeal is valid and the decision is reversed, the amount is returned to the appealing party. This system effectively disincentivizes malicious appeals.
+        </p>
+
+        <header class="sec-subsubheader" id="crowdfunding-appeals">Crowdfunding Appeals</header>
+        <p>
+          If one party cannot meet the required fee (during the appeal phase), the platform provides the ability for other users within the application to contribute funds to help pay that fee. As an incentive:
+        </p>
+        <ul>
+          <li>Contributors specify which side they support (freelancer or client).</li>
+          <li>If the funded party wins the appeal, contributors recover their contribution <strong>plus a proportional share</strong> of the additional amount the losing appellant forfeited.</li>
+          <li>If the funded party loses, contributors lose their contribution.</li>
+        </ul>
+        <p>
+          This aligns incentives for third parties to help finance cases they consider just and likely to win. The crowdfunding mechanism is implemented through the <code>fundAppeal</code> function in the ArbiterProxy contract, which tracks contributions by round and by contributor address.
+        </p>
+
+        <header class="sec-subsubheader" id="evidence-submission">Evidence Submission</header>
+        <p>
+          Throughout the dispute lifecycle, both parties can submit evidence to support their case. Evidence is submitted as IPFS URIs pointing to JSON files containing:
+        </p>
+        <ul>
+          <li>Descriptions of the work performed or issues encountered</li>
+          <li>Links to deliverables, screenshots, or other relevant files</li>
+          <li>Communications between the parties</li>
+          <li>Any other supporting documentation</li>
+        </ul>
+        <p>
+          The platform automatically includes the last submitted deliverable as evidence when a dispute is created. Additional evidence can be submitted at any time before the dispute is ruled upon. The contract emits standard ERC-1497 <code>Evidence</code> events that Kleros jurors can access.
+        </p>
+
+        <header class="sec-subsubheader" id="final-resolution">Final Resolution</header>
+        <p>
+          Once the dispute concludes and a final verdict is reached (whether in the first instance or after an appeal), the corresponding contract (HiredTalentsContract or GigsContract) acts accordingly:
+        </p>
+        <ul>
+          <li><strong>Ruling 1 (Freelancer wins):</strong> The agreed-upon funds are released to the freelancer, and the deliverable is marked as approved.</li>
+          <li><strong>Ruling 2 (Client wins):</strong> The funds held in escrow are returned to the client, and the deliverable is marked as rejected.</li>
+          <li><strong>Ruling 0 (Refused or tied):</strong> The payment is split evenly between freelancer and client.</li>
+        </ul>
+        <p>
+          The finalization process is triggered by calling the <code>finalizeDispute</code> function, which queries the current ruling from the ArbiterProxy, executes the ruling through Kleros if necessary, and distributes funds accordingly. All contributors to appeal crowdfunding also receive their reimbursements and rewards during this process.
+        </p>
+
+        <header class="sec-subsubheader" id="dispute-dismissal">Dispute Dismissal</header>
+        <p>
+          At any point before a dispute is formally raised in Kleros (i.e., before both parties have paid), either party can dismiss the dispute. Dismissal results in:
+        </p>
+        <ul>
+          <li>Full refund of any fees paid by either party</li>
+          <li>The work contract returns to its previous state (typically <code>Ongoing</code>)</li>
+          <li>The dispute can be re-launched later if issues persist</li>
+        </ul>
+        <p>
+          This mechanism allows parties to resolve misunderstandings or issues amicably without incurring arbitration costs. However, a party can only dismiss a dispute <strong>once before it is raised</strong>. If the dispute is re-launched dismissal is no longer possible and it must proceed to arbitration. This prevents abuse of the dismissal feature to avoid paying the arbitration fees, while still allowing for a chance to resolve minor conflicts without escalation.
+        </p>
       </article>
     </section>
   </main>
