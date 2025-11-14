@@ -79,6 +79,11 @@ header {
   padding: 10px 10px 10px 10px;
 }
 
+.subsub-li{
+  position: relative;
+  padding: 8px 10px 8px 10px;
+}
+
 .nav-link {
   font-size: 2rem;
   text-decoration: none;
@@ -90,6 +95,13 @@ header {
   margin-left: 20px;
   text-decoration: none;
   color: #fafafa;
+}
+
+.nav-subsublink {
+  font-size: 1.3rem;
+  margin-left: 30px;
+  text-decoration: none;
+  color: #dddddd;
 }
 
 #main-doc{
@@ -109,6 +121,16 @@ header {
 .sec-subheader{
   font-size: 3rem;
   text-align: left;
+}
+
+.sec-subsubheader {
+  font-size: 2.2rem;
+  text-align: left;
+  color: #fafafa;
+  margin-top: 1.2rem;
+  margin-bottom: 0.8rem;
+  display: block;
+  line-height: 1.2;
 }
 
 .text-with-image {

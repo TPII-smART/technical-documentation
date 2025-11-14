@@ -18,12 +18,12 @@
       <li class="main-li"><a class="nav-link" href="#design">Design &amp; Architecture</a></li>
       <li class="sub-li"><a class="nav-sublink" href="#design-subtitle">Overview</a></li>
       <li class="sub-li"><a class="nav-sublink" href="#components">Main Components</a></li>
-      <li class="sub-li"><a class="nav-sublink" href="#design-smartcontracts">On-chain Layer</a></li>
-      <li class="sub-li"><a class="nav-sublink" href="#design-storage">Decentralized Storage</a></li>
-      <li class="sub-li"><a class="nav-sublink" href="#design-kleros">Decentralized Dispute Resolution</a></li>
-      <li class="sub-li"><a class="nav-sublink" href="#design-ponder">Event Indexing Layer</a></li>
-      <li class="sub-li"><a class="nav-sublink" href="#design-genai">GenAI Processing Layer</a></li>
-      <li class="sub-li"><a class="nav-sublink" href="#design-frontend">Frontend Architecture</a></li>
+      <li class="subsub-li"><a class="nav-subsublink" href="#design-frontend">Frontend Architecture</a></li>
+      <li class="subsub-li"><a class="nav-subsublink" href="#design-ponder">Event Indexing Layer</a></li>
+      <li class="subsub-li"><a class="nav-subsublink" href="#design-genai">GenAI Processing Layer</a></li>
+      <li class="subsub-li"><a class="nav-subsublink" href="#design-storage">Decentralized Storage</a></li>
+      <li class="subsub-li"><a class="nav-subsublink" href="#design-smartcontracts">On-chain Layer</a></li>
+      <li class="subsub-li"><a class="nav-subsublink" href="#design-kleros">Decentralized Dispute Resolution</a></li>
 
       <li class="main-li"><a class="nav-link" href="#contracts">Smart Contract Logic</a></li>
       <li class="sub-li"><a class="nav-sublink" href="#contracts-subtitle">Subtitle</a></li>
@@ -58,52 +58,52 @@
         <!-- COMPONENTS -->
         <header class="sec-subheader" id="components">Main Components</header>
         <ul>
+          <li><strong>Frontend Web3:</strong> DApp built with Scaffold-ETH 2 and deployed on Vercel.</li>
+          <li><strong>Ponder:</strong> Framework for indexing on-chain events into a relational PostgreSQL database.</li>
+          <li><strong>GenAI Validation Service:</strong> Multimodal model for deliverable verification, backed by PostgreSQL and Redis.</li>
+          <li><strong>IPFS:</strong> Distributed storage for large deliverables and dispute evidence.</li>
           <li><strong>Smart Contracts:</strong> Handle state transitions, payments, deadlines, and contract lifecycle.</li>
           <li><strong>Kleros:</strong> Decentralized arbitration system used for resolving disputes through juror voting.</li>
-          <li><strong>Ponder:</strong> Framework for indexing on-chain events into a relational PostgreSQL database.</li>
-          <li><strong>IPFS:</strong> Distributed storage for large deliverables and dispute evidence.</li>
-          <li><strong>GenAI Validation Service:</strong> Multimodal model for deliverable verification, backed by PostgreSQL and Redis.</li>
-          <li><strong>Frontend Web3:</strong> DApp built with Scaffold-ETH 2 and deployed on Vercel.</li>
         </ul>
 
-        <!-- SMART CONTRACTS (HIGH-LEVEL) -->
-        <header class="sec-subheader" id="design-smartcontracts">On-chain Layer</header>
+        <!-- FRONTEND -->
+        <header class="sec-subsubheader" id="design-frontend">Frontend Architecture</header>
         <p>
-          The blockchain layer manages the lifecycle of each work agreement, ensuring deterministic and verifiable execution. Smart Contracts enforce deadlines, freeze and release funds, and record immutable references to off-chain assets. Their internal logic is detailed in the next section.
+          The user interface is built on <strong>Scaffold-ETH 2</strong>, which provides wallet connectivity, contract interaction hooks, and reusable Web3 components. The stack consists of TypeScript, React, HTML and CSS. The final DApp is deployed on <strong>Vercel</strong> as a Platform-as-a-Service (PaaS), enabling fast iteration and continuous delivery. The frontend primarily integrates the <strong>MetaMask</strong> wallet provider for user authentication and transaction signing, although compatibility with additional wallets is also maintained.
+        </p>
+
+        <!-- PONDER -->
+        <header class="sec-subsubheader" id="design-ponder">Event Indexing Layer</header>
+        <p>
+          Since several application views require aggregated or historical information, <strong>Ponder</strong> listens to blockchain events and synchronizes them into a PostgreSQL database. This enables efficient querying of 
+          listings, contract histories, user activity, and dispute states. It requires an <strong>Alchemy</strong> RPC provider to connect to the Ethereum network and process new blocks in real-time.
+        </p>
+
+        <!-- GENAI -->
+        <header class="sec-subsubheader" id="design-genai">GenAI Processing Layer</header>
+        <p>
+          An AI model analyses submitted deliverables to verify whether they align with the work agreed upon. This component leverages <strong>Google's Gemini</strong> models, integrating text and image understanding to evaluate both relevance and quality of the content. The results are cached through two layers: <strong>PostgreSQL</strong> for persistence and <strong>Redis</strong> for fast retrieval, reducing repetitive inference and improving performance.
         </p>
 
         <!-- STORAGE -->
-        <header class="sec-subheader" id="design-storage">Decentralized Storage</header>
+        <header class="sec-subsubheader" id="design-storage">Decentralized Storage</header>
         <p>
-          Large audiovisual deliverables and dispute evidence are stored in <strong>IPFS</strong>. IPFS (InterPlanetary File System) is a peer-to-peer distributed file system that seeks to connect all computing devices with the same system of files. Uploaded files are identified by their content hash. Only the resulting hash is written on-chain, allowing the blockchain to act as an integrity verifier while avoiding the cost of storing large files directly on the network.
+          Large audiovisual deliverables and dispute evidence are stored in <strong>IPFS</strong>. IPFS (InterPlanetary File System) is a peer-to-peer distributed file system that seeks to connect all computing devices with the same system of files. Uploaded files are identified by their content hash. Only the resulting hash is written on-chain, allowing the blockchain to act as an integrity verifier while avoiding the cost of storing large files directly on the network. The provider used for IPFS uploads is <strong>Pinata</strong>.
+        </p>
+
+        <!-- SMART CONTRACTS (HIGH-LEVEL) -->
+        <header class="sec-subsubheader" id="design-smartcontracts">On-chain Layer</header>
+        <p>
+            The blockchain layer manages the lifecycle of each work agreement, ensuring deterministic and verifiable execution. Smart Contracts enforce deadlines, freeze and release funds, and record immutable references to off-chain assets. They were written using <strong>Solidity</strong>, and the primary tool used for development, testing, and deployment is <strong>Hardhat</strong>. Their internal logic will be explained in the <a href="#contracts">Smart Contract Logic</a> section.
         </p>
 
         <!-- KLEROS -->
-        <header class="sec-subheader" id="design-kleros">Decentralized Dispute Resolution</header>
+        <header class="sec-subsubheader" id="design-kleros">Decentralized Dispute Resolution</header>
         <p>
           Disputes between freelancers and clients are resolved through <strong>Kleros</strong>, which assigns a random 
           set of jurors who analyze the evidence and vote on the outcome. The system includes fee deposits, reimbursements, and an appeal mechanism with additional staking incentives to discourage frivolous claims.
         </p>
 
-        <!-- PONDER -->
-        <header class="sec-subheader" id="design-ponder">Event Indexing Layer</header>
-        <p>
-          Since several application views require aggregated or historical information, <strong>Ponder</strong> listens to blockchain events and synchronizes them into a PostgreSQL database. This enables efficient querying of 
-          listings, contract histories, user activity, and dispute states.
-        </p>
-
-        <!-- GENAI -->
-        <header class="sec-subheader" id="design-genai">GenAI Processing Layer</header>
-        <p>
-          A multimodal AI model analyses submitted deliverables to verify whether they align with the work agreed upon. 
-          The results are cached through two layers: <strong>PostgreSQL</strong> for persistence and <strong>Redis</strong> for fast retrieval, reducing repetitive inference and improving performance.
-        </p>
-
-        <!-- FRONTEND -->
-        <header class="sec-subheader" id="design-frontend">Frontend Architecture</header>
-        <p>
-          The user interface is built on <strong>Scaffold-ETH 2</strong>, which provides wallet connectivity, contract interaction hooks, and reusable Web3 components. The final DApp is deployed on <strong>Vercel</strong> as a Platform-as-a-Service (PaaS), enabling fast iteration and continuous delivery.
-        </p>
 
       </article>
     </section>
