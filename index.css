@@ -1,15 +1,21 @@
 html {
   font-size: 10px;
   font-family: 'Open Sans', Arial, sans-serif;
+  font-weight: lighter;
   scroll-behavior: smooth;
   background-color: #111314;
+  color: #b9b9b9;
+}
+
+strong, b {
+  font-weight: 800;
   color: #fafafa;
 }
 
 header {
   font-size: 2.5rem;
-  font-weight: bolder;
   text-align: center;
+  color: #fafafa;
 }
 
 #navbar {
@@ -74,7 +80,6 @@ header {
 }
 
 .nav-link {
-  font-weight: bold;
   font-size: 2rem;
   text-decoration: none;
   color: #fafafa;
