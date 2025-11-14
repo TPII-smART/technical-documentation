@@ -121,10 +121,11 @@ header {
 }
 
 .section-image {
-  width: 100px;
+  width: 70%;
+  max-width: 42vw;
   height: auto;
   border-radius: 5px;
-  border-color: #234969;
+  border: 1px solid #234969;
   object-fit: cover;
 }
 
@@ -173,12 +174,26 @@ header {
 /* Show when targeted by fragment */
 .lightbox:target { display: flex; }
 
+/* clickable backdrop that closes the lightbox when clicked */
+.lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background: transparent; /* darkening already provided by .lightbox background */
+  cursor: zoom-out;
+  z-index: 1000; /* below the image and close button */
+}
+
 /* Image inside lightbox */
 .lightbox img {
   max-width: 95%;
   max-height: 95%;
+  width: auto;
+  height: auto;
   box-shadow: 0 10px 40px rgba(0,0,0,0.7);
   border-radius: 6px;
+  position: relative;
+  z-index: 1010;
 }
 
 /* Close control (clicking it goes to href="#" which clears fragment) */
@@ -198,6 +213,7 @@ header {
   background: rgba(0,0,0,0.35);
   border-radius: 50%;
   box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+  z-index: 1011;
 }
 .lightbox-close:after { content: "✕"; color: #fff; line-height: 1; }
 

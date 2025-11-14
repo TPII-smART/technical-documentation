@@ -45,8 +45,15 @@
           The architecture of <strong>smART</strong> follows a decentralized model that integrates on-chain logic, event indexing, distributed storage, and a modern Web3 interface. Its goal is to minimize intermediaries in freelancer-client interactions and ensure transparency, integrity, and impartial dispute resolution.
         </p>
         <p>
-          The platform is structured into three layers: a <strong>blockchain layer</strong> that executes the core business logic, an <strong>off-chain event indexing and processing layer</strong>, and a <strong>frontend DApp layer</strong> that enables users to interact seamlessly with the system. It also includes a <strong>GenAI validation service</strong> backed by <strong>PostgreSQL</strong> and <strong>Redis</strong> for caching and fast retrieval.
+          The platform is structured into four layers: a <strong>blockchain layer</strong> that executes the core business logic, an <strong>off-chain event indexing and processing layer</strong>, a <strong>frontend DApp layer</strong> that enables users to interact seamlessly with the system, and a set of <strong>providers</strong> that supply RPC access, wallet connectivity, and decentralized file storage. It also includes a <strong>GenAI validation service</strong> backed by <strong>PostgreSQL</strong> and <strong>Redis</strong> for caching and fast retrieval.
         </p>
+
+        <div class="image-container">
+          <a class="thumb-link" href="#img-architecture">
+            <img class="section-image" src="assets/architecture.png" alt="smART Architecture Diagram">
+          </a>
+          <p class="image-description">Figure 1. smART system architecture.</p>
+        </div>
 
         <!-- COMPONENTS -->
         <header class="sec-subheader" id="components">Main Components</header>
@@ -120,14 +127,10 @@
   </main>
 
   <!-- Lightbox targets (CSS-only using :target) -->
-  <div id="img-design" class="lightbox">
+  <div id="img-architecture" class="lightbox">
+    <a class="lightbox-backdrop" href="#" title="Close"></a>
     <a class="lightbox-close" href="#" title="Close"></a>
-    <img src="assets/logo.png" alt="Design image large">
-  </div>
-
-  <div id="img-large" class="lightbox">
-    <a class="lightbox-close" href="#" title="Close"></a>
-    <img src="assets/logo.png" alt="Large image view">
+    <img src="assets/architecture.png" alt="Architecture diagram large">
   </div>
 </body>
 </html>
