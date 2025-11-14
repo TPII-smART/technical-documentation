@@ -26,7 +26,13 @@
       <li class="subsub-li"><a class="nav-subsublink" href="#design-kleros">Decentralized Dispute Resolution</a></li>
 
       <li class="main-li"><a class="nav-link" href="#contracts">Smart Contract Logic</a></li>
-      <li class="sub-li"><a class="nav-sublink" href="#contracts-subtitle">Subtitle</a></li>
+      <li class="sub-li"><a class="nav-sublink" href="#contracts-subtitle">Overview</a></li>
+      <li class="sub-li"><a class="nav-sublink" href="#deployed-contracts">Deployed Contracts</a></li>
+      <li class="subsub-li"><a class="nav-subsublink" href="#hiredtalentscontract">HiredTalentsContract</a></li>
+      <li class="subsub-li"><a class="nav-subsublink" href="#gigscontract">GigsContract</a></li>
+      <li class="subsub-li"><a class="nav-subsublink" href="#profileconfigcontract">ProfileConfigContract</a></li>
+      <li class="subsub-li"><a class="nav-subsublink" href="#arbiterproxy">ArbiterProxy</a></li>
+      <li class="sub-li"><a class="nav-sublink" href="#common-logic-best-practices">Common Logic & Best Practices</a></li>
 
       <li class="main-li"><a class="nav-link" href="#disputes">Dispute Resolution Flow</a></li>
       <li class="sub-li"><a class="nav-sublink" href="#disputes-subtitle">Subtitle</a></li>
@@ -108,12 +114,88 @@
       </article>
     </section>
 
-
     <section id="contracts" class="main-section">
       <header class="sec-header">Smart Contract Logic</header>
       <article class="sec-text">
-        <header class="sec-subheader" id="contracts-subtitle">Subtitle</header>
-        <p>Info here.</p>
+        <header class="sec-subheader" id="contracts-subtitle">Overview</header>
+        <p>
+          The platform relies on four primary smart contracts written in <strong>Solidity</strong> and deployed using <strong>Hardhat</strong>. Each contract serves a specific purpose in the ecosystem, working together to manage work agreements, user profiles, and dispute resolution in a decentralized manner. These were all deployed on the Ethereum Sepolia testnet for testing and demonstration purposes.
+        </p>
+
+        <header class="sec-subheader" id="deployed-contracts">Deployed Contracts</header>
+        <p>
+          The main smart contracts deployed on the Ethereum Sepolia testnet are:
+        </p>
+        <header class="sec-subsubheader" id="hiredtalentscontract">HiredTalentsContract</header>
+        <p>
+          This contract manages the <strong>Talent</strong> marketplace, where freelancers post service offerings (Talents) and clients can hire them by creating specific work orders (HiredTalents). The workflow follows these stages:
+        </p>
+        <ul>
+          <li><strong>Talent Creation:</strong> Freelancers publish their services with base pricing, estimated duration, and minimum notice time.</li>
+          <li><strong>HiredTalent Request:</strong> Clients create work orders under existing Talents, depositing the agreed payment amount in escrow.</li>
+          <li><strong>Acceptance:</strong> Freelancers accept or reject incoming requests. Upon acceptance, a deadline is set based on the estimated duration.</li>
+          <li><strong>Deliverable Submission:</strong> Freelancers upload their work deliverables, which are stored as IPFS hashes on-chain.</li>
+          <li><strong>Deliverable review:</strong> Clients review the submitted work. They can either approve it, request revisions, or raise a dispute.</li>
+          <li><strong>Completion Confirmation:</strong> Once the client approves the work, the payment is released to the freelancer.</li>
+          <li><strong>Rating System:</strong> Clients can rate completed work on a 1-5 scale to build reputation.</li>
+          <li><strong>Cancellation:</strong> Either party can initiate cancellation. If both agree during the ongoing phase, the client receives a full refund.</li>
+        </ul>
+
+        <header class="sec-subsubheader" id="gigscontract">GigsContract</header>
+        <p>
+          This contract handles the <strong>Gig</strong> marketplace, where clients post work requests and freelancers apply with proposals. The process differs from Talents in that clients initiate the job posting:
+        </p>
+        <ul>
+          <li><strong>Gig Creation:</strong> Clients post job requests with descriptions, maximum duration, and base payment amounts.</li>
+          <li><strong>Application Submission:</strong> Freelancers submit proposals with their proposed payment, timeline, and pitch comments.</li>
+          <li><strong>Application Management:</strong> Clients can accept, reject, or review multiple applications. Freelancers can withdraw pending applications.</li>
+          <li><strong>Acceptance & Payment:</strong> When a client accepts an application, they deposit the agreed payment amount and the gig transitions to in-progress state.</li>
+          <li><strong>Deliverable Submission:</strong> Same as in HiredTalents, freelancers upload their work deliverables, stored as IPFS hashes on-chain.</li>
+          <li><strong>Deliverable Review:</strong> Clients review the submitted work. They can approve it, request revisions, or raise a dispute.</li>
+          <li><strong>Rating System:</strong> Clients rate completed gigs to build freelancer reputation scores.</li>
+          <li><strong>Cancellation:</strong> Similar to HiredTalents, with mutual agreement required for refunds during the ongoing phase.</li>
+        </ul>
+
+        <header class="sec-subsubheader" id="profileconfigcontract">ProfileConfigContract</header>
+        <p>
+          A dedicated contract for managing user profiles on the platform. It stores and validates user information including:
+        </p>
+        <ul>
+          <li>Username, biography, and email address</li>
+          <li>Profile and banner images (stored as IPFS hashes)</li>
+          <li>Social media links (X/Twitter, Instagram, LinkedIn, ArtStation, Sketchfab, custom URLs)</li>
+        </ul>
+        <p>
+          The contract enforces length constraints on all fields and validates URL formats for social media links. Profile data is mapped by wallet address and can be updated by the owner at any time.
+        </p>
+
+        <header class="sec-subsubheader" id="arbiterproxy">ArbiterProxy</header>
+        <p>
+          This contract serves as the interface layer between smART and <strong>Kleros</strong> for dispute resolution. It implements a unified dispute management system that handles:
+        </p>
+        <ul>
+          <li><strong>Dispute Creation:</strong> Generates internal dispute IDs that map to external Talent/Gig IDs for tracking purposes.</li>
+          <li><strong>Fee Management:</strong> Collects arbitration fees from both parties. If only one party pays within the deadline, they automatically win.</li>
+          <li><strong>Evidence Submission:</strong> Allows both parties to submit evidence (IPFS links) throughout the dispute lifecycle.</li>
+          <li><strong>Kleros Integration:</strong> Creates disputes in the Kleros arbitrator once both parties have paid, implementing the ERC-792 arbitration standard.</li>
+          <li><strong>Appeal Handling:</strong> Manages multi-round appeals with asymmetric staking (winners stake 100%, losers stake 200%).</li>
+          <li><strong>Crowdfunding:</strong> Enables third parties to contribute funds to either side of an appeal in exchange for potential rewards.</li>
+          <li><strong>Ruling Execution:</strong> Distributes payments based on arbitrator decisions and handles fee reimbursements and rewards.</li>
+        </ul>
+        <p>
+          The ArbiterProxy uses a multi-owner pattern for access control and maintains separate event streams for Talent disputes and Gig disputes, allowing the frontend to track dispute states efficiently without complex on-chain queries.
+        </p>
+
+        <header class="sec-subsubheader" id="common-logic-best-practices">Common Logic & Best Practices</header>
+        <p>
+          All contracts implement comprehensive state management with enum-based states (e.g., <code>WaitingForApproval</code>, <code>Ongoing</code>, <code>Finished</code>, <code>Cancelled</code>, <code>Disputed</code>). State transitions are strictly enforced through require statements to prevent invalid operations. The contracts also include:
+        </p>
+        <ul>
+          <li>Modifier-based access control to restrict function calls to authorized parties</li>
+          <li>Input validation for string lengths, payment amounts, and addresses</li>
+          <li>Event emission for all significant state changes to enable efficient indexing by Ponder</li>
+          <li>Emergency cancellation functions restricted to the contract owner</li>
+        </ul>
       </article>
     </section>
 
